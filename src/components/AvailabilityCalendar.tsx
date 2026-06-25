@@ -13,6 +13,11 @@ interface Props {
   selectedDate: Date | undefined;
 }
 
+function toLocalDate(iso: string): Date {
+  const d = new Date(iso);
+  return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
 export default function AvailabilityCalendar({ onDateSelect, selectedDate }: Props) {
   const [busyPeriods, setBusyPeriods] = useState<BusyPeriod[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,21 +34,20 @@ export default function AvailabilityCalendar({ onDateSelect, selectedDate }: Pro
       .finally(() => setLoading(false));
   }, []);
 
-  const parseLocalDate = (iso: string) => {
-    const d = new Date(iso);
-    return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
-  };
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const disabledDays = [
-    { before: today },
-    ...busyPeriods.map((p) => ({
-      from: parseLocalDate(p.start),
-      to: new Date(parseLocalDate(p.end).getTime() - 86400000),
-    })),
-  ];
+  const busyRanges = busyPeriods.map((p) => {
+    const from = toLocalDate(p.start);
+    const to = toLocalDate(p.end);
+    to.setDate(to.getDate() - 1);
+    return { from, to };
+  });
+
+  const isDisabled = (date: Date): boolean => {
+    if (date < today) return true;
+    return busyRanges.some(({ from, to }) => date >= from && date <= to);
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -61,7 +65,7 @@ export default function AvailabilityCalendar({ onDateSelect, selectedDate }: Pro
             mode="single"
             selected={selectedDate}
             onSelect={onDateSelect}
-            disabled={disabledDays}
+            disabled={isDisabled}
             locale={es}
             numberOfMonths={1}
             showOutsideDays={false}
