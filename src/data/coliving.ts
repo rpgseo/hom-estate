@@ -19,7 +19,7 @@ export const coliving = {
     "El piso es mixto (chicos y chicas)",
     "Perfil: estudiantes y jóvenes profesionales",
   ],
-  googleCalendarId: "primary",
+  googleCalendarId: "ab236ac7c013ccdf118ec138b44906adc0a747b0fdbd42e5e15f4b2a3b0e8927@group.calendar.google.com",
   photos: [
     "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=80",
     "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80",

@@ -6,7 +6,7 @@ import { env } from "cloudflare:workers";
 export const GET: APIRoute = async ({ url }) => {
   const cfEnv = env as unknown as Record<string, string>;
   const serviceAccountJson = cfEnv.GOOGLE_SERVICE_ACCOUNT_JSON ?? "";
-  const calendarId = cfEnv.GOOGLE_CALENDAR_ID ?? coliving.googleCalendarId;
+  const calendarId = cfEnv.GOOGLE_CALENDAR_ID || coliving.googleCalendarId;
 
   const checkIn = url.searchParams.get("checkin");
   const months = parseInt(url.searchParams.get("months") ?? "3");

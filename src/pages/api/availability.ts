@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ url }) => {
   const cfEnv = env as unknown as Record<string, string>;
 
   const serviceAccountJson = cfEnv.GOOGLE_SERVICE_ACCOUNT_JSON ?? "";
-  const calendarId = cfEnv.GOOGLE_CALENDAR_ID ?? coliving.googleCalendarId;
+  const calendarId = (cfEnv.GOOGLE_CALENDAR_ID || coliving.googleCalendarId);
 
   const monthParam = url.searchParams.get("month");
   const now = new Date();
