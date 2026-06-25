@@ -31,8 +31,8 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    const busy = await getBusyPeriods(serviceAccountJson, calendarId, timeMin, timeMax);
-    return new Response(JSON.stringify({ busy }), {
+    const { busy, debug } = await getBusyPeriods(serviceAccountJson, calendarId, timeMin, timeMax);
+    return new Response(JSON.stringify({ busy, debug }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (e) {

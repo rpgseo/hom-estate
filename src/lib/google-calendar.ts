@@ -77,7 +77,7 @@ export async function getBusyPeriods(
   calendarId: string,
   timeMin: string,
   timeMax: string
-): Promise<BusyPeriod[]> {
+): Promise<{ busy: BusyPeriod[]; debug?: unknown }> {
   const token = await getAccessToken(serviceAccountJson);
 
   const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
@@ -93,16 +93,21 @@ export async function getBusyPeriods(
     }),
   });
 
+  const rawText = await res.text();
+
   if (!res.ok) {
-    console.error("Google Calendar freeBusy error:", await res.text());
-    return [];
+    return { busy: [], debug: { status: res.status, body: rawText } };
   }
 
-  const data = (await res.json()) as {
-    calendars: Record<string, { busy: BusyPeriod[] }>;
+  const data = JSON.parse(rawText) as {
+    calendars: Record<string, { busy: BusyPeriod[]; errors?: unknown[] }>;
   };
 
-  return data.calendars[calendarId]?.busy ?? [];
+  const calData = data.calendars[calendarId];
+  return {
+    busy: calData?.busy ?? [],
+    debug: { calendarErrors: calData?.errors, timeMin, timeMax, calendarId },
+  };
 }
 
 export async function createCalendarEvent(

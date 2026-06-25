@@ -39,14 +39,14 @@ export default function AvailabilityCalendar({ onDateSelect, selectedDate }: Pro
 
   const busyRanges = busyPeriods.map((p) => {
     const from = toLocalDate(p.start);
-    const to = toLocalDate(p.end);
-    to.setDate(to.getDate() - 1);
-    return { from, to };
+    const toExclusive = toLocalDate(p.end);
+    return { from, toExclusive };
   });
 
   const isDisabled = (date: Date): boolean => {
-    if (date < today) return true;
-    return busyRanges.some(({ from, to }) => date >= from && date <= to);
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    if (d < today) return true;
+    return busyRanges.some(({ from, toExclusive }) => d >= from && d < toExclusive);
   };
 
   return (
