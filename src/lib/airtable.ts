@@ -23,7 +23,7 @@ export async function createLead(
     notes?: string;
   }
 ) {
-  const res = await fetch(`${BASE_URL}/${baseId}/Leads`, {
+  const res = await fetch(`${BASE_URL}/${baseId}/Leads huéspedes`, {
     method: "POST",
     headers: headers(apiKey),
     body: JSON.stringify({
@@ -57,7 +57,7 @@ export async function updateLead(
   recordId: string,
   fields: Record<string, unknown>
 ) {
-  const res = await fetch(`${BASE_URL}/${baseId}/Leads/${recordId}`, {
+  const res = await fetch(`${BASE_URL}/${baseId}/Leads huéspedes/${recordId}`, {
     method: "PATCH",
     headers: headers(apiKey),
     body: JSON.stringify({ fields }),
@@ -78,7 +78,7 @@ export async function getLeadByStripeId(
 ) {
   const formula = encodeURIComponent(`{Stripe Payment ID} = "${stripePaymentId}"`);
   const res = await fetch(
-    `${BASE_URL}/${baseId}/Leads?filterByFormula=${formula}&maxRecords=1`,
+    `${BASE_URL}/${baseId}/Leads huéspedes?filterByFormula=${formula}&maxRecords=1`,
     { headers: headers(apiKey) }
   );
 
