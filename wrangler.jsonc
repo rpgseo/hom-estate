@@ -1,7 +1,7 @@
 {
 	"$schema": "./node_modules/wrangler/config-schema.json",
 	"compatibility_date": "2026-06-25",
-	"compatibility_flags": ["global_fetch_strictly_public"],
+	"compatibility_flags": [],
 	"name": "hom-estate-landing",
 	"main": "@astrojs/cloudflare/entrypoints/server",
 	"assets": {

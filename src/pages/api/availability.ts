@@ -40,9 +40,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (e) {
-    console.error(e);
-    return new Response(JSON.stringify({ busy: [], error: "Calendar unavailable" }), {
-      status: 500,
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("availability error:", msg);
+    return new Response(JSON.stringify({ busy: [], error: msg }), {
+      status: 200, // return 200 so frontend doesn't crash, error visible in payload
       headers: { "Content-Type": "application/json" },
     });
   }
